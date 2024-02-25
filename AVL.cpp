@@ -1,6 +1,3 @@
-#include <iostream>
-#include <string.h>
-#include <stdlib.h>
 #include "AVL.h"
 
 
@@ -84,7 +81,7 @@ TreeNode* AVLTree::removeMin(TreeNode* node) {
 }
 
 TreeNode* AVLTree::insert(TreeNode* node, int value) {
-    if (node == NULL) {
+    if (node == nullptr) {
         return new TreeNode(value);
     }
     if (value < node->value) {

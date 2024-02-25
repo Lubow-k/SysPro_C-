@@ -1,38 +1,44 @@
-SOURCE=main.cpp AVL.cpp
+CC=clang++
+
+# FLAGS=
+FLAGS=-fsanitize=address -fsanitize=leak -fsanitize=undefined
+
+SOURCE=main.cpp lines.cpp
 OBJECTS=$(SOURCE:.cpp=.o)
 EXECUTABLE=main
 
-TEST=test_AVL.cpp
+TEST=test_lines.cpp
 EXTEST=test
 
 base: $(OBJECTS)
-	clang++ $(OBJECTS) -o $(EXECUTABLE) 
+	$(CC) $(FLAGS) $(OBJECTS) -o $(EXECUTABLE) 
 
 main.o:
-	clang++ -c main.cpp
+	$(CC) $(FLAGS) -c main.cpp
 
 AVL.o:
-	clang++ -c AVL.cpp
+	$(CC) $(FLAGS) -c AVL.cpp
 
-
-sanitize:
-	clang++ $(OBJECTS) -o $(EXECUTABLE) -fsanitize=address -fsanitize=leak -fsanitize=undefined
-
-memory: 
-	clang++ $(OBJECTS) -o $(EXECUTABLE) -fsanitize=memory 
-
-thread:
-	clang++ $(OBJECTS) -o $(EXECUTABLE) -fsanitize=thread
+lines.o:
+	$(CC) $(FLAGS) -c lines.cpp
 
 run:
 	./$(EXECUTABLE) 
 
 
 test:
-	clang++ $(TEST) -o $(EXTEST) -lgtest -lgmock -pthread
+	$(CC) $(TEST) -o $(EXTEST) -lgtest -lgmock -pthread
 	./$(EXTEST)
 	rm $(EXTEST)
    
 
 clean:
-	rm $(EXECUTABLE)
+	rm -rf *.o $(EXECUTABLE)
+
+
+
+# memory: 
+# 	clang++ $(OBJECTS) -o $(EXECUTABLE) -fsanitize=memory 
+
+# thread:
+# 	clang++ $(OBJECTS) -o $(EXECUTABLE) -fsanitize=thread
