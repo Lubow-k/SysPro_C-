@@ -139,8 +139,15 @@ TreeNode* AVLTree::find(int value) {
     return find(root, value);
 }
 
+bool AVLTree::isBalanced() {
+    int b = getBalance(root);
+    return -1 <= b && b <= 1;
+}
+
 AVLTree::~AVLTree() {
     inDelete(root);
 }
+
+
 
  
