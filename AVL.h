@@ -10,6 +10,7 @@ public:
 
 
 class AVLTree {
+    void createNewTree(const AVLTree& other);
     void inDelete(TreeNode* node);
     int getHeight(TreeNode* node);
     int getBalance(TreeNode* node);
@@ -27,6 +28,8 @@ class AVLTree {
 public:
     TreeNode* root;
     AVLTree();
+    AVLTree(const AVLTree& other);
+    AVLTree& operator=(const AVLTree& other);
     void insert(int value);
     void remove(int value);
     TreeNode* find(int value);

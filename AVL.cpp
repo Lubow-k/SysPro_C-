@@ -1,13 +1,11 @@
 #include "AVL.h"
+#include <queue>
 
-
-TreeNode::TreeNode(int val) {
-    value = val;
-    height = 1;
-    left = nullptr;
-    right = nullptr;
-}  
-
+TreeNode::TreeNode(int val):
+    value(val),
+    height(1),
+    left(nullptr),
+    right(nullptr) {}
 
 void AVLTree::inDelete(TreeNode* node) {  
     if (node == nullptr) { return; }
@@ -120,8 +118,36 @@ TreeNode* AVLTree::find(TreeNode* node, int value) {
     return find(node->right, value);
 }
 
-AVLTree::AVLTree() {
+void AVLTree::createNewTree(const AVLTree& other) {
     root = nullptr;
+    std::queue<TreeNode *> q;
+    if (other.root != nullptr) {
+        q.push(other.root);
+    }
+    while (!q.empty()) { 
+        TreeNode* temp = q.front();
+        q.pop(); 
+        insert(temp->value);
+        if (temp->left != nullptr)
+            q.push(temp->left);
+
+        if (temp->right != nullptr)
+            q.push(temp->right);
+    }
+}
+
+AVLTree::AVLTree():
+        root(nullptr) {}
+
+
+AVLTree::AVLTree(const AVLTree& other) {
+    createNewTree(other);
+}
+
+AVLTree& AVLTree::operator=(const AVLTree& other) {
+    inDelete(root);
+    createNewTree(other);
+    return *this;
 }
 
 void AVLTree::insert(int value) {

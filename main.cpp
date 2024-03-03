@@ -8,19 +8,23 @@
 using namespace std;
 
 int main() {
-    // AVLTree tree;
-    // tree.insert(5);
-    // tree.insert(8);
+    AVLTree tree;
+    AVLTree tree_1;
+    tree_1.insert(23);
+    tree.insert(5);
+    tree.insert(8);
+    tree_1 = tree;
 
-    // cout << tree.root->value << endl;
-    // cout << tree.root->right->value << endl;
 
-    Line* line = new Line{1, 2, 3};
-    Line* line_2 = line->perpendicular(Point{-3, 0});
-    Point* point = line->intersection(Line{1, 0, 0});
+    cout << tree_1.root->value << endl;
+    cout << tree_1.root->right->value << endl;
 
-    delete point;
-    delete line;
-    delete line_2;
+    // Line* line = new Line{1, 2, 3};
+    // Line* line_2 = line->perpendicular(Point{-3, 0});
+    // Point* point = line->intersection(Line{1, 0, 0});
+
+    // delete point;
+    // delete line;
+    // delete line_2;
     return 0;
 };

@@ -3,11 +3,11 @@ CC=clang++
 # FLAGS=
 FLAGS=-fsanitize=address -fsanitize=leak -fsanitize=undefined
 
-SOURCE=main.cpp lines.cpp
+SOURCE=main.cpp AVL.cpp
 OBJECTS=$(SOURCE:.cpp=.o)
 EXECUTABLE=main
 
-TEST=test_lines.cpp
+TEST=test_AVL.cpp
 EXTEST=test
 
 base: $(OBJECTS)
