@@ -65,6 +65,43 @@ TEST(UnitTest, remove_not_exist_elem) {
     ASSERT_TRUE(tree.root->value == 7);
 }
 
+TEST(UnitTest, copy_constructor_diff_tree) {
+    AVLTree tree;
+    tree.insert(7);
+    tree.insert(8);
+    AVLTree tree_1(tree);
+    tree_1.insert(9);
+
+    TreeNode* node = tree.find(9);
+    ASSERT_TRUE(node == nullptr);
+
+    node = tree_1.find(9);
+    ASSERT_TRUE(node->value == 9);
+}
+
+
+TEST(UnitTest, copy_assignment_operator_diff_tree) {
+    AVLTree tree;
+    tree.insert(7);
+    tree.insert(8);
+    AVLTree tree_1 = tree;
+    tree_1.insert(9);
+
+    TreeNode* node = tree.find(7);
+    ASSERT_TRUE(node->value == 7);
+
+    node = tree.find(9);
+    ASSERT_TRUE(node == nullptr);
+
+    node = tree_1.find(7);
+    ASSERT_TRUE(node->value == 7);
+
+    node = tree_1.find(9);
+    ASSERT_TRUE(node->value == 9);
+}
+
+
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

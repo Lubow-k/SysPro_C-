@@ -145,8 +145,10 @@ AVLTree::AVLTree(const AVLTree& other) {
 }
 
 AVLTree& AVLTree::operator=(const AVLTree& other) {
-    inDelete(root);
-    createNewTree(other);
+    if (this != &other) {
+        inDelete(root);
+        createNewTree(other);
+    }
     return *this;
 }
 
