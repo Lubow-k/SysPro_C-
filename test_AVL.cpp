@@ -79,6 +79,21 @@ TEST(UnitTest, copy_constructor_diff_tree) {
     ASSERT_TRUE(node->value == 9);
 }
 
+TEST(UnitTest, copy_constructor_diff_tree_remove_elem) {
+    AVLTree tree;
+    tree.insert(7);
+    tree.insert(8);
+    tree.insert(9);
+    AVLTree tree_1(tree);
+    tree.remove(7);
+
+    TreeNode* node = tree_1.find(7);
+    ASSERT_TRUE(node->value == 7);
+
+    node = tree.find(7);
+    ASSERT_TRUE(node == nullptr);
+}
+
 
 TEST(UnitTest, copy_assignment_operator_diff_tree) {
     AVLTree tree;
