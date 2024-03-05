@@ -4,50 +4,64 @@
 #include <limits>
 
 class Point {
-public:
-    float x;  
-    float y; 
-    Point(float a, float b) {
-        x = a;
-        y = b;
+    double x, y;
+
+public: 
+    Point(double a, double b): x(a), y(b) {}
+    
+    double getX() const {
+        return x;
+    }
+
+    double getY() const {
+        return y;
     }
 };
 
 class Line {
-public:
-    // Ax + By + C = 0
-    float A;
-    float B;
-    float C;
+    double A, B, C;   // Ax + By + C = 0, where A = 1 
 
+public:
     Line(const Point& a, const Point& b) {
-        float x = b.x - a.y;
-        float y = b.y - a.y; 
-        A = -y;
-        B = x;
-        C = -(A * a.x + B * a.y);
+        double x = b.getX() - a.getX();
+        double y = b.getY() - a.getY(); 
+        A = 1;
+        B = x / (-y);
+        C = -(A * a.getX() + B * a.getY());
     }
 
-    Line(float a, float b, float c) { 
-        A = a;
-        B = b;
-        C = c;
+    Line(double a, double b, double c) { 
+        A = 1;
+        B = b / a;
+        C = c / a;
+    }
+
+    double getA() const {
+        return A;
+    }
+
+    double getB() const {
+        return B;
+    }
+
+    double getC() const {
+        return C;
     }
 
     Point* intersection(const Line& other) {
-        float det = A * other.B - B * other.A;
+        double det = A * other.getB() - B * other.getA();
         if (det == 0) {
             return nullptr;
         }
-        float x = -C * other.B + B * other.C;
-        float y = C * other.A - other.C * A;
+        double x = -C * other.getB() + B * other.getC();
+        double y = C * other.getA() - other.getC() * A;
         return new Point{x / det, y / det};
     }
     
     Line* perpendicular(const Point& a) {
-        float perpA = -B;
-        float perpB = A;
-        float perpC = -(perpA * a.x + perpB * a.y);
+        double perpA = 1;
+        double perpB = A / (-B);
+        double perpC = -(perpA * a.getX() + perpB * a.getY());
         return new Line(perpA, perpB, perpC);
     }
 };

@@ -5,49 +5,45 @@
 using namespace std;
 
 TEST(UnitTest, perpendicular) {
-    Line* line = new Line{1, 2, 3};
-    Line* line_2 = line->perpendicular(Point{-3, 0});
-    ASSERT_TRUE(line_2->A == -2);
-    ASSERT_TRUE(line_2->B == 1);
-    ASSERT_TRUE(line_2->C == -6);
-    delete line;
+    Line line{1, 2, 3};
+    Line* line_2 = line.perpendicular(Point{-3, 0});
+    ASSERT_TRUE(line_2->getA() == 1);
+    ASSERT_TRUE(line_2->getB() == -0.5);
+    ASSERT_TRUE(line_2->getC() == 3);
     delete line_2;
 }
 
 TEST(UnitTest, perpendicular_2) {
-    Line* line = new Line{0, 1, 0};
-    Line* line_2 = line->perpendicular(Point{0, 0});
-    ASSERT_TRUE(line_2->A == -1);
-    ASSERT_TRUE(line_2->B == 0);
-    ASSERT_TRUE(line_2->C == 0);
-    delete line;
+    Line line{0, 1, 0};
+    Line* line_2 = line.perpendicular(Point{0, 0});
+    ASSERT_TRUE(line_2->getA() == 1);
+    ASSERT_TRUE(line_2->getB() == 0);
+    ASSERT_TRUE(line_2->getC() == 0);
     delete line_2;
 }
 
 TEST(UnitTest, intersection) {
-    Line* line = new Line{1, 2, 3};
-    Point* point = line->intersection(Line{1, 0, 0});
-    ASSERT_TRUE(point->x == 0);
-    ASSERT_TRUE(point->y == -1.5);
-    delete line;
+    Line line{1, 2, 3};
+    Point* point = line.intersection(Line{1, 0, 0});
+    ASSERT_TRUE(point->getX() == 0);
+    ASSERT_TRUE(point->getY() == -1.5);
     delete point;
 }
 
 TEST(UnitTest, intersection_empty) {
-    Line* line = new Line{1, 2, 3};
-    Point* point = line->intersection(Line{2, 4, 6});
-    ASSERT_TRUE(point==nullptr);
-    delete line;
+    Line line{3, 2, 1};
+    Point* point = line.intersection(Line{6, 4, 2});
+    ASSERT_TRUE(point == nullptr);
     delete point;
 }
 
 TEST(UnitTest, points_coefficients) {
-    Line* line = new Line{-2, 2, 0};
-    Line* line_2 = new Line{Point{2, 2}, Point{4, 4}};
-    ASSERT_TRUE(line->A == line_2->A);
-    ASSERT_TRUE(line->B == line_2->B);
-    ASSERT_TRUE(line->C == line_2->C);
-    delete line;
+    Line line{-2, 2, 0};
+    Line* line_2 = new Line{Point{1, 1}, Point{4, 4}};
+    Line* line_3 = new Line{Point{-5, - 5}, Point{2, 2}};
+    ASSERT_TRUE(line.getA() == line_2->getA() && line_2->getA() == line_3->getA());
+    ASSERT_TRUE(line.getB() == line_2->getB() && line_2->getB() == line_3->getB());
+    ASSERT_TRUE(line.getC() == line_2->getC() && line_2->getC() == line_3->getC());
     delete line_2;
 }
 
