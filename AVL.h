@@ -1,38 +1,36 @@
-class TreeNode{
-public:
-    int value;  
-    int height; 
-    TreeNode* left;  
-    TreeNode* right; 
-
-    TreeNode(int val); 
-};
-
+#include <queue>
 
 class AVLTree {
+    struct Node {
+        int value;  
+        int height; 
+        Node* left;  
+        Node* right; 
+        Node(int val); 
+    };
+    Node* root;
     void createNewTree(const AVLTree& other);
-    void inDelete(TreeNode* node);
-    int getHeight(TreeNode* node);
-    int getBalance(TreeNode* node);
-    int max(int a, int b);
-    void fixHeight(TreeNode* node);
-    TreeNode* rotateLeft(TreeNode* root);
-    TreeNode* rotateRight(TreeNode* root);
-    TreeNode* balance(TreeNode* root);
-    TreeNode* findMin(TreeNode* node);
-    TreeNode* removeMin(TreeNode* node);
-    TreeNode* insert(TreeNode* node, int value);
-    TreeNode* remove(TreeNode* node, int value);
-    TreeNode* find(TreeNode* node, int value);
+    void inDelete(Node* node);
+    static int getHeight(Node* node);
+    static int getBalance(Node* node);
+    static void fixHeight(Node* node);
+    Node* rotateLeft(Node* root);
+    Node* rotateRight(Node* root);
+    Node* balance(Node* root);
+    Node* findMin(Node* node);
+    Node* removeMin(Node* node);
+    Node* insert(Node* node, int value);
+    Node* remove(Node* node, int value);
+    bool find(Node* node, int value);
   
 public:
-    TreeNode* root;
     AVLTree();
     AVLTree(const AVLTree& other);
     AVLTree& operator=(const AVLTree& other);
     void insert(int value);
     void remove(int value);
-    TreeNode* find(int value);
+    bool find(int value);
     bool isBalanced();
+    bool isEmpty();
     ~AVLTree();
 };

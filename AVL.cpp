@@ -1,38 +1,32 @@
 #include "AVL.h"
-#include <queue>
 
-TreeNode::TreeNode(int val):
+AVLTree::Node::Node(int val):
     value(val),
     height(1),
     left(nullptr),
     right(nullptr) {}
 
-void AVLTree::inDelete(TreeNode* node) {  
+void AVLTree::inDelete(AVLTree::Node* node) {  
     if (node == nullptr) { return; }
     inDelete(node->right);
     inDelete(node->left);
     delete node;
 }
 
-int AVLTree::getHeight(TreeNode* node){
+int AVLTree::getHeight(AVLTree::Node* node){
     return node == nullptr ? 0 : node->height; 
 }
 
-int AVLTree::getBalance(TreeNode* node) {
+int AVLTree::getBalance(AVLTree::Node* node) {
     return getHeight(node->right) - getHeight(node->left);
 }
 
-int AVLTree::max(int a, int b) {
-    return (a > b)? a : b;
+void AVLTree::fixHeight(AVLTree::Node* node) {
+    node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
 }
 
-void AVLTree::fixHeight(TreeNode* node) {
-    node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
-
-}
-
-TreeNode* AVLTree::rotateLeft(TreeNode* root){
-    TreeNode* a = root->right;
+AVLTree::Node* AVLTree::rotateLeft(AVLTree::Node* root){
+    AVLTree::Node* a = root->right;
     root->right = a->left;
     a->left = root;
     fixHeight(root);
@@ -40,8 +34,8 @@ TreeNode* AVLTree::rotateLeft(TreeNode* root){
     return a;
 }
 
-TreeNode* AVLTree::rotateRight(TreeNode* root){
-    TreeNode* a = root->left;
+AVLTree::Node* AVLTree::rotateRight(AVLTree::Node* root){
+    AVLTree::Node* a = root->left;
     root->left = a->right;
     a->right = root;
     fixHeight(root);
@@ -49,7 +43,7 @@ TreeNode* AVLTree::rotateRight(TreeNode* root){
     return a;
 } 
 
-TreeNode* AVLTree::balance(TreeNode* root) {
+AVLTree::Node* AVLTree::balance(AVLTree::Node* root) {
     fixHeight(root);
     int height_difference = getBalance(root);
     if (height_difference >= 2) {
@@ -66,11 +60,11 @@ TreeNode* AVLTree::balance(TreeNode* root) {
     return root;
 }
 
-TreeNode* AVLTree::findMin(TreeNode* node) {
+AVLTree::Node* AVLTree::findMin(AVLTree::Node* node) {
     return node->left ? findMin(node->left) : node;
 }
 
-TreeNode* AVLTree::removeMin(TreeNode* node) {
+AVLTree::Node* AVLTree::removeMin(AVLTree::Node* node) {
     if (node->left == nullptr) {
         return node->right;
     }
@@ -78,9 +72,9 @@ TreeNode* AVLTree::removeMin(TreeNode* node) {
     return balance(node);
 }
 
-TreeNode* AVLTree::insert(TreeNode* node, int value) {
+AVLTree::Node* AVLTree::insert(AVLTree::Node* node, int value) {
     if (node == nullptr) {
-        return new TreeNode(value);
+        return new AVLTree::Node(value);
     }
     if (value < node->value) {
         node->left = insert(node->left, value);
@@ -90,18 +84,18 @@ TreeNode* AVLTree::insert(TreeNode* node, int value) {
     return balance(node);
 }
 
-TreeNode* AVLTree::remove(TreeNode* node, int value) {
+AVLTree::Node* AVLTree::remove(AVLTree::Node* node, int value) {
     if (node == nullptr) return node;
     if (value < node->value) {
         node->left = remove(node->left, value);
     } else if (value > node->value) {
         node->right = remove(node->right, value);
     } else {
-        TreeNode* l = node->left;
-        TreeNode* r = node->right;
+        AVLTree::Node* l = node->left;
+        AVLTree::Node* r = node->right;
         delete node;
         if (!r) return l;
-        TreeNode* min = findMin(r);
+        AVLTree::Node* min = findMin(r);
         min->right = removeMin(r);
         min->left = l;
         return balance(min);
@@ -109,9 +103,11 @@ TreeNode* AVLTree::remove(TreeNode* node, int value) {
     return balance(node);
 }
 
-TreeNode* AVLTree::find(TreeNode* node, int value) {
-    if (node == nullptr  || node->value == value)
-        return node;
+bool AVLTree::find(AVLTree::Node* node, int value) {
+    if (node == nullptr) 
+        return false;  
+    if (node->value == value)
+        return true;
     if (value < node->value) {
         return find(node->left, value);
     } 
@@ -120,12 +116,12 @@ TreeNode* AVLTree::find(TreeNode* node, int value) {
 
 void AVLTree::createNewTree(const AVLTree& other) {
     root = nullptr;
-    std::queue<TreeNode *> q;
+    std::queue<AVLTree::Node *> q;
     if (other.root != nullptr) {
         q.push(other.root);
     }
     while (!q.empty()) { 
-        TreeNode* temp = q.front();
+        AVLTree::Node* temp = q.front();
         q.pop(); 
         insert(temp->value);
         if (temp->left != nullptr)
@@ -160,13 +156,17 @@ void AVLTree::remove(int value) {
     root = remove(root, value);
 }
 
-TreeNode* AVLTree::find(int value) {
+bool AVLTree::find(int value) {
     return find(root, value);
 }
 
 bool AVLTree::isBalanced() {
     int b = getBalance(root);
     return -1 <= b && b <= 1;
+}
+
+bool AVLTree::isEmpty() {
+    return root == nullptr;
 }
 
 AVLTree::~AVLTree() {
