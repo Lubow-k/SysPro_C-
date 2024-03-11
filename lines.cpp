@@ -2,20 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits>
+#include <optional>
 
-class Point {
-    double x, y;
-
-public: 
-    Point(double a, double b): x(a), y(b) {}
-    
-    double getX() const {
-        return x;
-    }
-
-    double getY() const {
-        return y;
-    }
+struct Point {
+    double x, y; 
+    Point(double x_, double y_): x(x_), y(y_) {}
 };
 
 class Line {
@@ -23,11 +14,11 @@ class Line {
 
 public:
     Line(const Point& a, const Point& b) {
-        double x = b.getX() - a.getX();
-        double y = b.getY() - a.getY(); 
+        double x = b.x - a.x;
+        double y = b.y - a.y; 
         A = 1;
         B = x / (-y);
-        C = -(A * a.getX() + B * a.getY());
+        C = -(A * a.x + B * a.y);
     }
 
     Line(double a, double b, double c) { 
@@ -48,21 +39,21 @@ public:
         return C;
     }
 
-    Point* intersection(const Line& other) {
+    std::optional<Point> intersection(const Line& other) {
         double det = A * other.getB() - B * other.getA();
         if (det == 0) {
-            return nullptr;
+            return std::nullopt;
         }
         double x = -C * other.getB() + B * other.getC();
         double y = C * other.getA() - other.getC() * A;
-        return new Point{x / det, y / det};
+        return Point{x / det, y / det};
     }
     
-    Line* perpendicular(const Point& a) {
+    Line perpendicular(const Point& a) {
         double perpA = 1;
         double perpB = A / (-B);
-        double perpC = -(perpA * a.getX() + perpB * a.getY());
-        return new Line(perpA, perpB, perpC);
+        double perpC = -(perpA * a.x + perpB * a.y);
+        return Line(perpA, perpB, perpC);
     }
 };
 
