@@ -1,10 +1,11 @@
-CC=clang++
+CC=g++
 
 # FLAGS=
-FLAGS=-fsanitize=address -fsanitize=leak -fsanitize=undefined
+FLAGS= -std=c++20 -fsanitize=address -fsanitize=leak -fsanitize=undefined
 
-SOURCE=main.cpp AVL.cpp
-OBJECTS=$(SOURCE:.cpp=.o)
+MAIN=main.cpp
+SOURCE=AVL.cpp
+OBJECTS=$(SOURCE:.cpp=.o main.o)
 EXECUTABLE=main
 
 TEST=test_AVL.cpp
@@ -27,7 +28,7 @@ run:
 
 
 test:
-	$(CC) $(TEST) -o $(EXTEST) -lgtest -lgmock -pthread
+	$(CC) $(TEST) $(SOURCE) -o $(EXTEST) -lgtest -lgmock -pthread
 	./$(EXTEST)
 	rm $(EXTEST)
    

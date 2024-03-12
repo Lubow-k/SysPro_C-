@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "AVL.cpp"
+#include "AVL.h"
 
 using namespace std;
 
@@ -88,17 +88,41 @@ TEST(UnitTest, copy_constructor_diff_tree_remove_elem) {
 
 TEST(UnitTest, copy_assignment_operator_diff_tree) {
     AVLTree tree;
+    AVLTree tree_1;
     tree.insert(7);
     tree.insert(8);
-    AVLTree tree_1 = tree;
     tree_1.insert(9);
+    tree_1.insert(10);
+    tree_1 = tree;
+    tree_1.insert(11);
 
-    ASSERT_TRUE(tree.find(7));
-    ASSERT_FALSE(tree.find(9));
     ASSERT_TRUE(tree_1.find(7));
-    ASSERT_TRUE(tree_1.find(9));
+    ASSERT_TRUE(tree_1.find(8));
+    ASSERT_FALSE(tree_1.find(9));
+
+    ASSERT_TRUE(tree_1.find(11));
+    ASSERT_FALSE(tree.find(11));
 }
 
+TEST(UnitTest, move_constructor) { 
+    AVLTree tree;
+    tree.insert(1);
+    tree.insert(2);
+    AVLTree tree_1(std::move(tree));
+    ASSERT_TRUE(tree_1.find(2));
+}
+
+
+TEST(UnitTest, move_assignment_operator) { 
+    AVLTree tree;
+    tree.insert(1);
+    tree.insert(2);
+    AVLTree tree_1;
+    tree_1.insert(3);
+    tree_1 = std::move(tree);
+    ASSERT_TRUE(tree_1.find(2));
+    ASSERT_FALSE(tree_1.find(3));
+}
 
 
 int main(int argc, char **argv)

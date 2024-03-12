@@ -1,4 +1,5 @@
 #include "AVL.h"
+#include <iostream>
 
 AVLTree::Node::Node(int val):
     value(val),
@@ -136,15 +137,17 @@ AVLTree::AVLTree():
         root(nullptr) {}
 
 
-AVLTree::AVLTree(const AVLTree& other) {
+AVLTree::AVLTree(const AVLTree& other) {    // copy constructor 
     createNewTree(other);
 }
 
-AVLTree& AVLTree::operator=(const AVLTree& other) {
-    if (this != &other) {
-        inDelete(root);
-        createNewTree(other);
-    }
+AVLTree::AVLTree(AVLTree&& other) {         // move constructor 
+    root = other.root;
+    other.root = nullptr;
+}
+
+AVLTree& AVLTree::operator=(AVLTree other) {   // copy and swap 
+    std::swap(root, other.root);
     return *this;
 }
 

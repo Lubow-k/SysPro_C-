@@ -26,7 +26,8 @@ class AVLTree {
 public:
     AVLTree();
     AVLTree(const AVLTree& other);
-    AVLTree& operator=(const AVLTree& other);
+    AVLTree(AVLTree&& other);
+    AVLTree& operator=(AVLTree other);
     void insert(int value);
     void remove(int value);
     bool find(int value);

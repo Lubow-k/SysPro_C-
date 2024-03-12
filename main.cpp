@@ -15,16 +15,10 @@ int main() {
     tree.insert(8);
     tree_1 = tree;
 
-
-    cout << tree_1.root->value << endl;
-    cout << tree_1.root->right->value << endl;
-
-    // Line* line = new Line{1, 2, 3};
-    // Line* line_2 = line->perpendicular(Point{-3, 0});
+    // Line line = Line{1, 2, 3};
+    // Line line_2 = line.perpendicular(Point{-3, 0});
     // Point* point = line->intersection(Line{1, 0, 0});
 
     // delete point;
-    // delete line;
-    // delete line_2;
     return 0;
 };
