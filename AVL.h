@@ -14,14 +14,14 @@ class AVLTree {
     static int getHeight(Node* node);
     static int getBalance(Node* node);
     static void fixHeight(Node* node);
-    Node* rotateLeft(Node* root);
-    Node* rotateRight(Node* root);
-    Node* balance(Node* root);
-    Node* findMin(Node* node);
-    Node* removeMin(Node* node);
-    Node* insert(Node* node, int value);
-    Node* remove(Node* node, int value);
-    bool find(Node* node, int value);
+    static Node* rotateLeft(Node* root);
+    static Node* rotateRight(Node* root);
+    static Node* balance(Node* root);
+    static Node* findMin(Node* node);
+    static Node* removeMin(Node* node);
+    static Node* insert(Node* node, int value);
+    static Node* remove(Node* node, int value);
+    static bool find(Node* node, int value);
   
 public:
     AVLTree();

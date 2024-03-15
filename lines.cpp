@@ -6,7 +6,6 @@
 
 struct Point {
     double x, y; 
-    Point(double x_, double y_): x(x_), y(y_) {}
 };
 
 class Line {
