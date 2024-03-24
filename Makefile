@@ -4,11 +4,11 @@ CC=g++
 FLAGS= -std=c++20 -fsanitize=address -fsanitize=leak -fsanitize=undefined
 
 MAIN=main.cpp
-SOURCE=AVL.cpp
-OBJECTS=$(SOURCE:.cpp=.o main.o)
+SOURCE=scoped_pointer.cpp
+OBJECTS=$(SOURCE:.cpp=.o)
 EXECUTABLE=main
 
-TEST=test_AVL.cpp
+TEST=test_lines.cpp
 EXTEST=test
 
 base: $(OBJECTS)
@@ -22,6 +22,9 @@ AVL.o:
 
 lines.o:
 	$(CC) $(FLAGS) -c lines.cpp
+
+scoped_pointer.o:
+	$(CC) $(FLAGS) -c scoped_pointer.cpp
 
 run:
 	./$(EXECUTABLE) 
