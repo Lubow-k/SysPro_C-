@@ -78,15 +78,21 @@ int main(int argc, char **argv)
     sp_3 = std::move(sp_1);
     std::cout << sp_3->x  << sp_3->y << std::endl;
 
+    // copy assignment operator
+    ScopedPointer sp_4 = ScopedPointer(new Point{1, 4});
+    ScopedPointer sp_5 = ScopedPointer(new Point{4, 1});
+    sp_4 = sp_5;
+    std::cout << sp_4->x  << sp_4->y << std::endl;
+
   
     // move ctr v2
-    ScopedPointerV2 sp_4 = ScopedPointerV2(new Point{4, 4});
-    ScopedPointerV2 sp_5= std::move(sp_4);
-    std::cout << sp_5->x  << sp_5->y << std::endl;
+    ScopedPointerV2 sp_6 = ScopedPointerV2(new Point{4, 4});
+    ScopedPointerV2 sp_7= std::move(sp_6);
+    std::cout << sp_7->x  << sp_7->y << std::endl;
 
     // move assignment operator v2
-    ScopedPointerV2 sp_6 = ScopedPointerV2(new Point{1, 1});
-    ScopedPointerV2 sp_7 = ScopedPointerV2(new Point{2, 2});
-    sp_7 = std::move(sp_6);
-    std::cout << sp_7->x  << sp_7->y << std::endl;
+    ScopedPointerV2 sp_8 = ScopedPointerV2(new Point{1, 1});
+    ScopedPointerV2 sp_9 = ScopedPointerV2(new Point{2, 2});
+    sp_9 = std::move(sp_8);
+    std::cout << sp_9->x  << sp_9->y << std::endl;
 }
