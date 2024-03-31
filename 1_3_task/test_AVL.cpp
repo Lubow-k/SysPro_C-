@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "AVL.h"
+#include "AVL.hpp"
 
 using namespace std;
 
