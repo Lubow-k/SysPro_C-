@@ -1,4 +1,4 @@
-#include "AVL.h"
+#include "AVL.hpp"
 #include <iostream>
 
 AVLTree::Node::Node(int val):

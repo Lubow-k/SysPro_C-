@@ -1,19 +1,16 @@
-#include <assert.h>
-#include <iostream>
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include "matrix.hpp"
 
-
-void test_1() {
+TEST(UnitTest, check_1) {
     std::vector<double> c = {2, 3, 4};
     Matrix m(c);
-    assert(m[0][0] == 2);
-    assert(m[0][1] == 0);
-    assert(m[2][2] == 4);
-    std::cout << "Done #1\n";
+    ASSERT_TRUE(m[0][0] == 2);
+    ASSERT_TRUE(m[0][1] == 0);
+    ASSERT_TRUE(m[2][2] == 4);
 }
 
-void test_2() {
-    // add_matrix
+TEST(UnitTest, add_matrix) {
     std::vector<double> c = {1, 1, 1};
     Matrix m(3);
     Matrix w(c);
@@ -21,51 +18,47 @@ void test_2() {
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
             if (i == j) {
-                assert(m[i][i] == 1);
+                ASSERT_TRUE(m[i][i] == 1);
             } else {
-                assert(m[0][1] == 0);
+                ASSERT_TRUE(m[0][1] == 0);
             }
         }
     }
-    std::cout << "Done #2\n";
 }
 
-void test_3() {
-    // add_double
+
+TEST(UnitTest, add_double) {
     std::vector<double> c = {8, 8, 8};
     Matrix w(c);
     Matrix m = w + (-1);
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
             if (i == j) {
-                assert(m[i][i] == 7);
+                ASSERT_TRUE(m[i][i] == 7);
             } else {
-                assert(m[0][1] == 0);
+                ASSERT_TRUE(m[0][1] == 0);
             }
         }
     }
-    std::cout << "Done #3\n";
 }
 
-void test_4() {
-    // mult_double
+
+TEST(UnitTest, mult_double) {
     std::vector<double> c = {1, 1, 1};
     Matrix m(c);
     m *= 2;
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
             if (i == j) {
-                assert(m[i][i] == 2);
+                ASSERT_TRUE(m[i][i] == 2);
             } else {
-                assert(m[0][1] == 0);
+                ASSERT_TRUE(m[0][1] == 0);
             }
         }
     }
-    std::cout << "Done #4\n";
 }
 
-void test_5() {
-    // mult_matrix
+TEST(UnitTest, mult_matrix) {
     /*  12   *  10   =   14     */
     /*  00      02       00     */
     Matrix m(2);
@@ -77,39 +70,30 @@ void test_5() {
     w[1][1] = 2;
 
     Matrix x = m * w;
-    assert(x[0][0] == 1);
-    assert(x[0][1] == 4);
-    assert(x[1][0] == 0);
-    assert(x[1][1] == 0);
-    std::cout << "Done #5\n";
+    ASSERT_TRUE(x[0][0] == 1);
+    ASSERT_TRUE(x[0][1] == 4);
+    ASSERT_TRUE(x[1][0] == 0);
+    ASSERT_TRUE(x[1][1] == 0);
 }
 
-void test_6() {
-    // eq 
+
+TEST(UnitTest, eq) {
     std::vector<double> c = {1, 1, 1};
     Matrix m(c);
     Matrix w(c);
-    assert(m == w);
-    std::cout << "Done #6\n";
+    ASSERT_TRUE(m == w);
 }
 
-void test_7() {
-    // cast
+TEST(UnitTest, cast) {
     std::vector<double> c = {3, 3, 12};
     Matrix m(c);
     m[0][1] = 9;
-    assert(static_cast<double>(m) == 27);
-    std::cout << "Done #7\n";
+    ASSERT_TRUE(static_cast<double>(m) == 27);
 }
 
 
-int main() {
-    test_1();
-    test_2();
-    test_3();
-    test_4();
-    test_5();
-    test_6();
-    test_7();
-    std::cout << "all tests passed\n";
+int main(int argc, char **argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
