@@ -26,8 +26,6 @@ Matrix::Matrix(int len) : len(len) {
     fill_zero();
 }
 
-Matrix::Matrix() : Matrix(1) {}
-
 Matrix::Matrix(std::vector<double> v) : len(v.size()) {
     alloc_matrix();
     fill_zero();
@@ -126,6 +124,11 @@ Matrix operator*(const Matrix& m1, const Matrix& m2) {
 Matrix operator*(const Matrix& m, double num) {
     Matrix temp(m);
     return (temp *= num);
+}
+
+Matrix operator*(double num, const Matrix& m) {
+    Matrix temp(Matrix::diagonal(m.len, num));
+    return (temp *= m);
 }
 
 bool operator==(const Matrix& m1, const Matrix& m2) {

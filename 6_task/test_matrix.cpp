@@ -102,6 +102,36 @@ void test_7() {
     std::cout << "Done #7\n";
 }
 
+void test_8() {
+    // operator[][] out of range
+    std::vector<double> c = {1, 2, 3};
+    Matrix m(c);
+    try {
+      m[4][4] = 9;
+    } catch (std::out_of_range e) {
+        std::string message = "Row: 4, col: 4, matrix len: 3";
+        assert(message == std::string(e.what()));
+    }
+    std::cout << "Done #8\n";
+}
+
+void test_9() {
+    // A = num * B;
+    std::vector<double> c = {1, 1, 1};
+    Matrix b(c);
+    Matrix a = 3 * b;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            if (i == j) {
+                assert(a[i][i] == 3);
+            } else {
+                assert(a[0][1] == 0);
+            }
+        }
+    }
+    std::cout << "Done #9\n";
+}
+
 
 int main() {
     test_1();
@@ -111,5 +141,7 @@ int main() {
     test_5();
     test_6();
     test_7();
+    test_8();
+    test_9();
     std::cout << "all tests passed\n";
 }

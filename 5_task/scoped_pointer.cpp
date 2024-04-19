@@ -1,4 +1,5 @@
 #include <iostream>
+#include <optional>
 
 template<typename T>
 class ScopedPointer {
@@ -23,6 +24,16 @@ class ScopedPointer {
     T* operator->() { return pointer; }
     const T* operator->() const { return pointer; }
 
+    std::optional<T> get() { 
+      if (pointer) return *pointer;
+      return std::nullopt; 
+    }
+        
+    const std::optional<T> get() const { 
+      if (pointer) return *pointer;
+      return std::nullopt;
+    }
+
     ~ScopedPointer() { delete pointer; }
 };
 
@@ -40,15 +51,28 @@ class ScopedPointerV2 {
         other.pointer = nullptr;
     }
 
-    ScopedPointerV2& operator=(ScopedPointerV2&& other) {   // call only move constructor   
-      if (this != &other) {                                 // try to copy - compilation error (prohibited)
-        std::swap(pointer, other.pointer);
+    ScopedPointerV2& operator=(ScopedPointerV2&& other) {    // move assignment operator   
+      if (this != &other) { 
+        delete pointer;                              
+        pointer = other.pointer;
+        other.pointer = nullptr;
       }             
       return *this;
     }
 
     T* operator->() { return pointer; }
     const T* operator->() const { return pointer; }
+
+
+    std::optional<T> get() { 
+      if (pointer) return *pointer;
+      return std::nullopt; 
+    }
+        
+    const std::optional<T> get() const { 
+        if (pointer) return *pointer;
+        return std::nullopt;
+    }
 
     ~ScopedPointerV2() { delete pointer; }
 };

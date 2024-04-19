@@ -1,5 +1,5 @@
 #pragma once
-#include "Expression.hpp"
+#include "expression.hpp"
 
 
 class Unary: public Expression {
@@ -13,11 +13,12 @@ class Binary: public Expression {
   protected:
     Expression* op_1;
     Expression* op_2;
+    virtual std::string get_sign() const = 0;
     Binary(Expression* op_1, Expression* op_2): op_1(op_1), op_2(op_2) {}
-    std::string print(std::string operation) {
-      std::string str_1 = op_1->print();
-      std::string str_2 = op_2->print();
-      return "(" + str_1 + operation + str_2 + ")"; 
+    explicit operator std::string() const {
+      std::string str_1 = static_cast<std::string>(*op_1);
+      std::string str_2 = static_cast<std::string>(*op_2);
+      return "(" + str_1 + get_sign() + str_2 + ")"; 
     }
     ~Binary() {
       delete op_1;
@@ -29,7 +30,7 @@ class Binary: public Expression {
 class Add: public Binary {
   public:
     Add(Expression* op_1, Expression* op_2): Binary(op_1, op_2) {} 
-    std::string print() { return Binary::print(" + "); }
+    std::string get_sign() const { return " + "; }
     Expression* diff(std::string var) { 
       return new Add(op_1->diff(var), op_2->diff(var)); 
     }
@@ -41,7 +42,7 @@ class Add: public Binary {
 class Sub: public Binary {
   public:
     Sub(Expression* op_1, Expression* op_2): Binary(op_1, op_2) {} 
-    std::string print() { return Binary::print(" - "); }
+    std::string get_sign() const { return " - "; }
     Expression* diff(std::string var) { 
       return new Sub(op_1->diff(var), op_2->diff(var)); 
     }
@@ -53,7 +54,7 @@ class Sub: public Binary {
 class Mult: public Binary {
   public:
     Mult(Expression* op_1, Expression* op_2): Binary(op_1, op_2) {} 
-    std::string print() { return Binary::print(" * "); }
+    std::string get_sign() const { return " * "; }
     Expression* diff(std::string var) { 
       return new Add(new Mult(op_1->diff(var), op_2->copy()), new Mult(op_1->copy(), op_2->diff(var))); 
     }
@@ -65,7 +66,7 @@ class Mult: public Binary {
 class Div: public Binary {
   public:
     Div(Expression* op_1, Expression* op_2): Binary(op_1, op_2) {} 
-    std::string print() { return Binary::print(" / "); }
+    std::string get_sign() const { return " / "; }
     Expression* diff(std::string var) { 
       Expression* up = new Sub(new Mult(op_1->diff(var), op_2->copy()), new Mult(op_1->copy(), op_2->diff(var))); 
       Expression* down = new Mult(op_2->copy(), op_2->copy());
@@ -80,8 +81,8 @@ class Div: public Binary {
 class Exponent: public Unary {
   public:
     Exponent(Expression* op): Unary(op) {} 
-    std::string print() { 
-      return "e^" + op->print(); 
+    explicit operator std::string() const { 
+      return "e^" + static_cast<std::string>(*op); 
     }
     Expression* diff(std::string var) { 
       return new Mult(op->diff(var), this->copy()); 
@@ -96,8 +97,8 @@ class Val: public Expression {
     int num;
   public:
     Val(int num): num(num) {}
-    std::string print() {
-      return (std::to_string(num));
+    explicit operator std::string() const { 
+      return std::to_string(num); 
     }
     Expression* diff(std::string var) {
       return new Val(0);
@@ -111,8 +112,8 @@ class Var: public Expression {
     std::string variable;
   public:
     Var(std::string var): variable(var) {}
-    std::string print() {
-      return (variable);
+    explicit operator std::string() const { 
+      return variable; 
     }
     Expression* diff(std::string var) {
       if (variable == var) {

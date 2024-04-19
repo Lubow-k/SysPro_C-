@@ -60,6 +60,7 @@ void test_6() {
     sp_1 = std::move(sp_0);
     assert(sp_1->x == 5);
     assert(sp_1->y == 4);
+    assert(sp_0.get() == std::nullopt);
     std::cout << "Done #6\n";
 }
 
