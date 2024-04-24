@@ -1,31 +1,104 @@
 #include <iostream>
-#include "7_task/expressions.hpp"
+#include <string>
+
+#include "8_task/file/FileSource.hpp"
+#include "8_task/file/FileSourceBuffer.hpp"
+
+#include "8_task/string/StringSource.hpp"
+#include "8_task/string/StringSourceBuffer.hpp"
+
+
 
 int main() {
-    // Expression* e = new Add(new Var("y"), new Val(10));
-    // std::string res = e->print();
-    // std::cout << res << std::endl;
+    /* FILE */
+    std::string in_file = "8_task/file/in.txt";
+    FileSource fs = FileSource(in_file);
 
-    // Expression* t = e->diff("y");
-    // res = t->print();
-    // std::cout << res << std::endl;
+    fs.open();
 
-    // Expression* e = new Add(new Var("x"), new Mult(new Val(10), new Var("y")));
-    Expression* e = new Exponent(new Sub(new Val(10), new Val(90)));
+    fs.write('T');
+    fs.write('R');
+    fs.write('P');
+    fs.write('U');
 
-    std::string res = e->print();
-    std::cout << res << std::endl;
+    std::cout << fs.read_char() << std::endl;
+    std::cout << fs.read_char() << std::endl;
+    std::cout << fs.read_char() << std::endl;
+    std::cout << fs.read_char() << std::endl;
 
-    Expression* res1 = e->diff("x");
-    res = res1->print();
-    std::cout << res << std::endl;
+    fs.write("rrrr ");
+    std::cout << fs.read_string() << std::endl;
 
-    Expression* res2 = e->diff("y");
-    res = res2->print();
-    std::cout << res << std::endl;
+    fs.write(678);
+    fs.write(" ");
+    std::cout << fs.read_int() << std::endl;
 
-    delete e;
-    delete res1;
-    delete res2;
+    fs.write("tttt ");
+    std::cout << fs.read_string() << std::endl;
+
+    fs.close();
+
+
+    // StringSource ss = StringSource();
+    // ss.open();
+
+    // ss.write('q');
+    // ss.write('w');
+    // ss.write('e');
+    // ss.write(-89);   // check for neg too
+    // ss.write(' ');
+    // ss.write("rty ");
+
+    // std::cout << ss.read_char() << std::endl;
+    // std::cout << ss.read_char() << std::endl;
+    // std::cout << ss.read_char() << std::endl;
+    // std::cout << ss.read_int() << std::endl;
+    // std::cout << ss.read_string() << std::endl;
+    // std::cout << ss.eof() << std::endl;
+
+    // ss.close();
+
+    // FileSourceBuffer fsb = FileSourceBuffer(in_file, 5);
+    // fsb.open();
+
+    // fsb.write('m');
+    // fsb.write('a');
+    // fsb.write('m');
+    // fsb.write('a');
+
+    // fsb.write('d');
+    // fsb.write('a');
+    // fsb.write('d');
+
+    // fsb.write('l');
+    // fsb.write('l');
+    // fsb.write('l');
+    // fsb.write('l');
+
+    // std::cout << fsb.read_char() << std::endl;
+    // std::cout << fsb.read_char() << std::endl;
+    // std::cout << fsb.read_char() << std::endl;
+    // std::cout << fsb.read_char() << std::endl;
+
+    // std::cout << fsb.read_char() << std::endl;
+    // std::cout << fsb.read_char() << std::endl;
+    // std::cout << fsb.read_char() << std::endl;
+
+    // std::cout << fsb.read_char() << std::endl;
+    // std::cout << fsb.read_char() << std::endl;
+    // std::cout << fsb.read_char() << std::endl;
+    // std::cout << fsb.read_char() << std::endl;
+
+    // fsb.close();
+
+
+    // StringSourceBuffer ssb = StringSourceBuffer(5);
+    // ssb.open();
+    // ssb.write('m');
+    // std::cout << ssb.read_char() << std::endl;
+
+    // ssb.close();
+
+
     return 0;
 };
