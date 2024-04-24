@@ -127,8 +127,7 @@ Matrix operator*(const Matrix& m, double num) {
 }
 
 Matrix operator*(double num, const Matrix& m) {
-    Matrix temp(Matrix::diagonal(m.len, num));
-    return (temp *= m);
+    return m * num; 
 }
 
 bool operator==(const Matrix& m1, const Matrix& m2) {
