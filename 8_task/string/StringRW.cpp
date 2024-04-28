@@ -1,23 +1,23 @@
-#include "StringSource.hpp"
+#include "StringRW.hpp"
 
 
 /* Write */
 
-void StringSource::write(const char& ch) {
+void StringRW::write(const char& ch) {
     source += ch;
 }
 
-void StringSource::write(const int& num) {
+void StringRW::write(const int& num) {
   source += std::to_string(num);
 }
 
-void StringSource::write(const std::string& str) {
+void StringRW::write(const std::string& str) {
   source += str;
 }
 
 /* Read */
 
-char StringSource::read_char() {
+char StringRW::read_char() {
     if (it == source.end()) {
         throw StringException("EOF while reading char");
     }
@@ -25,7 +25,7 @@ char StringSource::read_char() {
 }
 
 
-int StringSource::read_int() {
+int StringRW::read_int() {
     std::string num;
     while (*it != ' ' && it != source.end()) { num += *it++; }
     if (it == source.end()) {
@@ -39,7 +39,7 @@ int StringSource::read_int() {
 }
 
 
-std::string StringSource::read_string() {
+std::string StringRW::read_string() {
     std::string str;
     while (*it != ' ' && it != source.end()) { str += *it++; }
     if (it == source.end()) {

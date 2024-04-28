@@ -3,7 +3,7 @@
 #include "../IOException.hpp"
 
 
-class StringSource: public ReaderWriter {
+class StringSource: virtual IOSource {
     bool string_open;
   
   protected:
@@ -19,14 +19,5 @@ class StringSource: public ReaderWriter {
     bool is_open() { return string_open; }
     bool eof() { return it == source.end(); }          
     void close() { string_open = false; }
-    void open() { string_open = true; }
-
-    char read_char();
-    int read_int();
-    std::string read_string(); 
-
-    void write(const char& ch);
-    void write(const int& num);
-    void write(const std::string& str);    
-
+    void open() { string_open = true; }   
 };

@@ -3,7 +3,7 @@
 #include <string>
 
 
-class Reader: public IOSource {
+class Reader: virtual public IOSource {
   public:
     virtual char read_char() = 0;
     virtual int read_int() = 0;                            // until space
@@ -11,7 +11,7 @@ class Reader: public IOSource {
 };
 
 
-class Writer: public IOSource {
+class Writer: virtual public IOSource {
   public:
     virtual void write(const char& ch) = 0;
     virtual void write(const int& num) = 0;

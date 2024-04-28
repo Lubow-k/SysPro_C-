@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include "IOException.hpp"
 
 class SourceBuffer {
     size_t index_write = 0;

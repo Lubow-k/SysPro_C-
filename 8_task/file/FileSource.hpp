@@ -3,8 +3,9 @@
 #include "../ReaderWriter.hpp"
 #include "../IOException.hpp"
 
+#define MAX_LEN 500
 
-class FileSource: public ReaderWriter {
+class FileSource: virtual public IOSource {
     const char* file_name;
     bool file_open;
 
@@ -18,17 +19,20 @@ class FileSource: public ReaderWriter {
     ~FileSource() { if (file_open) { fclose(source); } }
 
 
-    bool is_open();
-    bool eof();
-    void close();
-    void open();
+  void open() {
+    FILE* fptr = fopen(file_name, "r+");  // reading and writing
+    if (fptr == NULL) {
+      throw FileException("Not able to open the file.");
+    }
+    source = fptr;   
+    file_open = true;
+  }
 
-    char read_char();
-    int read_int();
-    std::string read_string(); 
+  bool is_open() { return file_open; }
+  bool eof() { return feof(source); }
 
-    void write(const char& ch);
-    void write(const int& num);
-    void write(const std::string& str);    
-
+  void close() { 
+    fclose(source); 
+    file_open = false;
+  }  
 };
