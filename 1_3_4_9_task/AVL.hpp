@@ -1,12 +1,14 @@
+#pragma once
 #include <queue>
 
+template <typename T>
 class AVLTree {
     struct Node {
-        int value;  
+        T value;  
         int height; 
         Node* left;  
         Node* right; 
-        Node(int val); 
+        Node(T val); 
     };
     Node* root;
     void createNewTree(const AVLTree& other);
@@ -19,18 +21,18 @@ class AVLTree {
     static Node* balance(Node* root);
     static Node* findMin(Node* node);
     static Node* removeMin(Node* node);
-    static Node* insert(Node* node, int value);
-    static Node* remove(Node* node, int value);
-    static bool find(Node* node, int value);
+    static Node* insert(Node* node, T value);
+    static Node* remove(Node* node, T value);
+    static bool find(Node* node, T value);
   
 public:
     AVLTree();
     AVLTree(const AVLTree& other);
     AVLTree(AVLTree&& other);
     AVLTree& operator=(AVLTree other);
-    void insert(int value);
-    void remove(int value);
-    bool find(int value);
+    void insert(T value);
+    void remove(T value);
+    bool find(T value);
     bool isBalanced();
     bool isEmpty();
     ~AVLTree();

@@ -1,33 +1,40 @@
 #include "AVL.hpp"
 #include <iostream>
 
-AVLTree::Node::Node(int val):
+template <typename T>
+AVLTree<T>::Node::Node(T val):
     value(val),
     height(1),
     left(nullptr),
     right(nullptr) {}
 
-void AVLTree::inDelete(AVLTree::Node* node) {  
+
+template <typename T>
+void AVLTree<T>::inDelete(AVLTree<T>::Node* node) {  
     if (node == nullptr) { return; }
     inDelete(node->right);
     inDelete(node->left);
     delete node;
 }
 
-int AVLTree::getHeight(AVLTree::Node* node){
+template <typename T>
+int AVLTree<T>::getHeight(AVLTree<T>::Node* node){
     return node == nullptr ? 0 : node->height; 
 }
 
-int AVLTree::getBalance(AVLTree::Node* node) {
+template <typename T>
+int AVLTree<T>::getBalance(AVLTree<T>::Node* node) {
     return getHeight(node->right) - getHeight(node->left);
 }
 
-void AVLTree::fixHeight(AVLTree::Node* node) {
+template <typename T>
+void AVLTree<T>::fixHeight(AVLTree<T>::Node* node) {
     node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
 }
 
-AVLTree::Node* AVLTree::rotateLeft(AVLTree::Node* root){
-    AVLTree::Node* a = root->right;
+template <typename T>
+AVLTree<T>::Node* AVLTree<T>::rotateLeft(AVLTree<T>::Node* root){
+    AVLTree<T>::Node* a = root->right;
     root->right = a->left;
     a->left = root;
     fixHeight(root);
@@ -35,8 +42,9 @@ AVLTree::Node* AVLTree::rotateLeft(AVLTree::Node* root){
     return a;
 }
 
-AVLTree::Node* AVLTree::rotateRight(AVLTree::Node* root){
-    AVLTree::Node* a = root->left;
+template <typename T>
+AVLTree<T>::Node* AVLTree<T>::rotateRight(AVLTree<T>::Node* root){
+    AVLTree<T>::Node* a = root->left;
     root->left = a->right;
     a->right = root;
     fixHeight(root);
@@ -44,7 +52,9 @@ AVLTree::Node* AVLTree::rotateRight(AVLTree::Node* root){
     return a;
 } 
 
-AVLTree::Node* AVLTree::balance(AVLTree::Node* root) {
+
+template <typename T>
+AVLTree<T>::Node* AVLTree<T>::balance(AVLTree<T>::Node* root) {
     fixHeight(root);
     int height_difference = getBalance(root);
     if (height_difference >= 2) {
@@ -61,11 +71,13 @@ AVLTree::Node* AVLTree::balance(AVLTree::Node* root) {
     return root;
 }
 
-AVLTree::Node* AVLTree::findMin(AVLTree::Node* node) {
+template <typename T>
+AVLTree<T>::Node* AVLTree<T>::findMin(AVLTree<T>::Node* node) {
     return node->left ? findMin(node->left) : node;
 }
 
-AVLTree::Node* AVLTree::removeMin(AVLTree::Node* node) {
+template <typename T>
+AVLTree<T>::Node* AVLTree<T>::removeMin(AVLTree<T>::Node* node) {
     if (node->left == nullptr) {
         return node->right;
     }
@@ -73,9 +85,10 @@ AVLTree::Node* AVLTree::removeMin(AVLTree::Node* node) {
     return balance(node);
 }
 
-AVLTree::Node* AVLTree::insert(AVLTree::Node* node, int value) {
+template <typename T>
+AVLTree<T>::Node* AVLTree<T>::insert(AVLTree<T>::Node* node, T value) {
     if (node == nullptr) {
-        return new AVLTree::Node(value);
+        return new AVLTree<T>::Node(value);
     }
     if (value < node->value) {
         node->left = insert(node->left, value);
@@ -85,18 +98,19 @@ AVLTree::Node* AVLTree::insert(AVLTree::Node* node, int value) {
     return balance(node);
 }
 
-AVLTree::Node* AVLTree::remove(AVLTree::Node* node, int value) {
+template <typename T>
+AVLTree<T>::Node* AVLTree<T>::remove(AVLTree<T>::Node* node, T value) {
     if (node == nullptr) return node;
     if (value < node->value) {
         node->left = remove(node->left, value);
     } else if (value > node->value) {
         node->right = remove(node->right, value);
     } else {
-        AVLTree::Node* l = node->left;
-        AVLTree::Node* r = node->right;
+        AVLTree<T>::Node* l = node->left;
+        AVLTree<T>::Node* r = node->right;
         delete node;
         if (!r) return l;
-        AVLTree::Node* min = findMin(r);
+        AVLTree<T>::Node* min = findMin(r);
         min->right = removeMin(r);
         min->left = l;
         return balance(min);
@@ -104,7 +118,8 @@ AVLTree::Node* AVLTree::remove(AVLTree::Node* node, int value) {
     return balance(node);
 }
 
-bool AVLTree::find(AVLTree::Node* node, int value) {
+template <typename T>
+bool AVLTree<T>::find(AVLTree<T>::Node* node, T value) {
     if (node == nullptr) 
         return false;  
     if (node->value == value)
@@ -115,14 +130,15 @@ bool AVLTree::find(AVLTree::Node* node, int value) {
     return find(node->right, value);
 }
 
-void AVLTree::createNewTree(const AVLTree& other) {
+template <typename T>
+void AVLTree<T>::createNewTree(const AVLTree<T>& other) {
     root = nullptr;
-    std::queue<AVLTree::Node *> q;
+    std::queue<AVLTree<T>::Node *> q;
     if (other.root != nullptr) {
         q.push(other.root);
     }
     while (!q.empty()) { 
-        AVLTree::Node* temp = q.front();
+        AVLTree<T>::Node* temp = q.front();
         q.pop(); 
         insert(temp->value);
         if (temp->left != nullptr)
@@ -133,46 +149,56 @@ void AVLTree::createNewTree(const AVLTree& other) {
     }
 }
 
-AVLTree::AVLTree():
+template <typename T>
+AVLTree<T>::AVLTree():
         root(nullptr) {}
 
 
-AVLTree::AVLTree(const AVLTree& other) {    // copy constructor 
+template <typename T>
+AVLTree<T>::AVLTree(const AVLTree<T>& other) {    // copy constructor 
     createNewTree(other);
 }
 
-AVLTree::AVLTree(AVLTree&& other) {         // move constructor 
+template <typename T>
+AVLTree<T>::AVLTree(AVLTree<T>&& other) {         // move constructor 
     root = other.root;
     other.root = nullptr;
 }
 
-AVLTree& AVLTree::operator=(AVLTree other) {   // copy and swap 
+template <typename T>
+AVLTree<T>& AVLTree<T>::operator=(AVLTree<T> other) {   // copy and swap 
     std::swap(root, other.root);
     return *this;
 }
 
-void AVLTree::insert(int value) {
+template <typename T>
+void AVLTree<T>::insert(T value) {
     root = insert(root, value);
 }
 
-void AVLTree::remove(int value) {
+template <typename T>
+void AVLTree<T>::remove(T value) {
     root = remove(root, value);
 }
 
-bool AVLTree::find(int value) {
+template <typename T>
+bool AVLTree<T>::find(T value) {
     return find(root, value);
 }
 
-bool AVLTree::isBalanced() {
+template <typename T>
+bool AVLTree<T>::isBalanced() {
     int b = getBalance(root);
     return -1 <= b && b <= 1;
 }
 
-bool AVLTree::isEmpty() {
+template <typename T>
+bool AVLTree<T>::isEmpty() {
     return root == nullptr;
 }
 
-AVLTree::~AVLTree() {
+template <typename T>
+AVLTree<T>::~AVLTree() {
     inDelete(root);
 }
 
