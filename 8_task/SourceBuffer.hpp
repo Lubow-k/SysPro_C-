@@ -6,7 +6,6 @@
 class SourceBuffer {
     size_t index_write = 0;
     size_t index_read = 0;
-    size_t copy_index = 0;
 
   protected:
     size_t buffer_size;
@@ -18,6 +17,7 @@ class SourceBuffer {
     void append(const char& ch) { 
       if (index_write == buffer_size) {      // full buffer
           append_to_resource();
+          index_write = 0;
       }
       buffer_write[index_write++] = ch; 
     }

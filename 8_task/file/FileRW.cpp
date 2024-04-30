@@ -10,7 +10,11 @@ void FileRW::write(const char& ch) {
 
 void FileRW::write(const int& num) {
   fseek(source, writing_pos, 0);
-  writing_pos += int(log10(num) + 1);
+  if (num == 0) {
+    writing_pos++;
+  } else {
+    writing_pos += int(log10(num) + 1);
+  }
   fprintf(source, "%d", num);
 }
 
@@ -36,7 +40,11 @@ int FileRW::read_int() {
   fseek(source, reading_pos, 0);    
   int num;
   if (fscanf(source, "%d", &num) && ! eof()) { 
-    reading_pos += int(log10(num) + 1) + 1;
+    if (num == 0) { 
+      reading_pos += 2; 
+    } else {
+      reading_pos += int(log10(num) + 1) + 1;
+    }
     return num; 
   };
   throw FileException("Error while reading int");

@@ -22,7 +22,7 @@ class FileSource: virtual public IOSource {
   void open() {
     FILE* fptr = fopen(file_name, "r+");  // reading and writing
     if (fptr == NULL) {
-      throw FileException("Not able to open the file.");
+      throw FileException("Not able to open the file");
     }
     source = fptr;   
     file_open = true;

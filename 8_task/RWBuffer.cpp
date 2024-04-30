@@ -9,7 +9,7 @@ char ReaderWriterBuffer::read_char() {
 int ReaderWriterBuffer::read_int() {
     std::string num;
     char ch = get();
-    while (ch != ' ') { num += ch; } 
+    while (ch != ' ') { num += ch; ch = get(); } 
     if (is_number(num)) {
         return stoi(num);
     }
@@ -20,7 +20,10 @@ int ReaderWriterBuffer::read_int() {
 std::string ReaderWriterBuffer::read_string() {
     std::string str;
     char ch = get();
-    while (ch != ' ') { str += ch; } 
+    while (ch != ' ') { 
+        str += ch; 
+        ch = get();
+    } 
     return str;
 }
 
