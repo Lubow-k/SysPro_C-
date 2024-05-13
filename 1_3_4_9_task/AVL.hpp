@@ -6,9 +6,10 @@ class AVLTree {
     struct Node {
         T value;  
         int height; 
+        Node* parent;
         Node* left;  
         Node* right; 
-        Node(T val); 
+        Node(T, Node*); 
     };
     Node* root;
     void createNewTree(const AVLTree& other);
@@ -21,7 +22,7 @@ class AVLTree {
     static Node* balance(Node* root);
     static Node* findMin(Node* node);
     static Node* removeMin(Node* node);
-    static Node* insert(Node* node, T value);
+    static Node* insert(Node* node, Node* parent, T value);
     static Node* remove(Node* node, T value);
     static bool find(Node* node, T value);
   
@@ -36,4 +37,27 @@ public:
     bool isBalanced();
     bool isEmpty();
     ~AVLTree();
+    class Iterator {
+        Node* current;
+      public:
+        Iterator(Node* node) { current = node; }
+
+        Iterator& operator++();
+        Iterator operator++(int);
+        
+        Node& operator*() { return *current; }
+        Node* operator->() { return current; }
+        const Node* operator->() const { return current; }
+        
+        bool operator==(const Iterator& other) const {
+            return current == other.current;
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return !(*this==other);
+        } 
+    };
+
+    Iterator begin() { return Iterator(findMin(AVLTree<T>::root)); }
+    Iterator end() { return Iterator(nullptr); }
 };

@@ -1,10 +1,38 @@
 #include "AVL.hpp"
 #include <iostream>
 
+
 template <typename T>
-AVLTree<T>::Node::Node(T val):
-    value(val),
+AVLTree<T>::Iterator& AVLTree<T>::Iterator::operator++() {
+    AVLTree<T>::Node* p;
+    if (current->right != nullptr) {
+        current = current->right;
+        current = findMin(current);
+    } else {
+        p = current->parent;
+        while (p != nullptr && current == p->right) {
+            current = p;
+            p = p->parent;
+        }
+        current = p;
+    }
+    return *this;
+}
+
+
+template <typename T>
+AVLTree<T>::Iterator AVLTree<T>::Iterator::operator++(int) {
+    auto it = *this;
+    ++*this;
+    return it;
+}
+
+
+template <typename T>
+AVLTree<T>::Node::Node(T val_, AVLTree<T>::Node* parent_):
+    value(val_),
     height(1),
+    parent(parent_),
     left(nullptr),
     right(nullptr) {}
 
@@ -36,7 +64,12 @@ template <typename T>
 AVLTree<T>::Node* AVLTree<T>::rotateLeft(AVLTree<T>::Node* root){
     AVLTree<T>::Node* a = root->right;
     root->right = a->left;
+    if (a->left != nullptr) {
+        a->left->parent = root;
+    }
     a->left = root;
+    a->parent = root->parent;
+    root->parent = a;
     fixHeight(root);
     fixHeight(a);
     return a;
@@ -46,7 +79,12 @@ template <typename T>
 AVLTree<T>::Node* AVLTree<T>::rotateRight(AVLTree<T>::Node* root){
     AVLTree<T>::Node* a = root->left;
     root->left = a->right;
+    if (a->right != nullptr) {
+        a->right->parent = root;
+    }
     a->right = root;
+    a->parent = root->parent;
+    root->parent = a;
     fixHeight(root);
     fixHeight(a);
     return a;
@@ -86,14 +124,14 @@ AVLTree<T>::Node* AVLTree<T>::removeMin(AVLTree<T>::Node* node) {
 }
 
 template <typename T>
-AVLTree<T>::Node* AVLTree<T>::insert(AVLTree<T>::Node* node, T value) {
+AVLTree<T>::Node* AVLTree<T>::insert(AVLTree<T>::Node* node, AVLTree<T>::Node* parent, T value) {
     if (node == nullptr) {
-        return new AVLTree<T>::Node(value);
+        return new AVLTree<T>::Node(value, parent);
     }
     if (value < node->value) {
-        node->left = insert(node->left, value);
+        node->left = insert(node->left, node, value);
     } else {
-        node->right = insert(node->right, value);
+        node->right = insert(node->right, node, value);
     }
     return balance(node);
 }
@@ -173,7 +211,7 @@ AVLTree<T>& AVLTree<T>::operator=(AVLTree<T> other) {   // copy and swap
 
 template <typename T>
 void AVLTree<T>::insert(T value) {
-    root = insert(root, value);
+    root = insert(root, nullptr, value);
 }
 
 template <typename T>

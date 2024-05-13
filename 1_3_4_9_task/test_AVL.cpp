@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <iostream>
-#include "AVL.hpp"
 #include "AVL.cpp"
 #include <string>
 
@@ -75,6 +74,57 @@ void test_6() {
 }
 
 
+void test_7() {
+    AVLTree<int> tree;
+    tree.insert(4);
+    tree.insert(2);
+    tree.insert(1);
+    tree.insert(3);
+    tree.insert(6);
+    tree.insert(5);
+
+    std::vector<int> exp(6);
+    std::vector<int> real;
+    std::generate(exp.begin(), exp.end(), [n = 1] () mutable {return n++;});
+
+    for (auto& node: tree) {
+        real.push_back(node.value);
+    }
+    assert(exp == real);
+    std::cout << "Done #7\n";
+}
+
+void test_8() {
+    AVLTree<char> tree;
+    tree.insert('B');
+    tree.insert('A');
+    tree.insert('C');
+
+    std::vector<char> exp(3);
+    std::vector<char> real_1;
+    std::vector<char> real_2;
+    std::generate(exp.begin(), exp.end(), [n = 'A'] () mutable {return n++;});
+
+    auto it = tree.begin();
+    auto end = tree.end();
+
+    for (; it != end; ++it) {
+        real_1.push_back(it->value);
+    }
+
+    it = tree.begin();
+    for (; it != end; it++) {
+        real_2.push_back(it->value);
+    }
+
+    assert(exp == real_1);
+    assert(exp == real_2);
+    std::cout << "Done #8\n";
+}
+
+
+
+
 
 int main() {
     test_1();
@@ -83,5 +133,7 @@ int main() {
     test_4();
     test_5();
     test_6();
+    test_7();
+    test_8();
     std::cout << "all tests passed\n";
 }
