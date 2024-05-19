@@ -87,8 +87,8 @@ void test_7() {
     std::vector<int> real;
     std::generate(exp.begin(), exp.end(), [n = 1] () mutable {return n++;});
 
-    for (auto& node: tree) {
-        real.push_back(node.value);
+    for (auto& value: tree) {
+        real.push_back(value);
     }
     assert(exp == real);
     std::cout << "Done #7\n";
@@ -109,12 +109,12 @@ void test_8() {
     auto end = tree.end();
 
     for (; it != end; ++it) {
-        real_1.push_back(it->value);
+        real_1.push_back(*it);
     }
 
     it = tree.begin();
     for (; it != end; it++) {
-        real_2.push_back(it->value);
+        real_2.push_back(*it);
     }
 
     assert(exp == real_1);

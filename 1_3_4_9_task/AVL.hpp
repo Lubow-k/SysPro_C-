@@ -45,7 +45,8 @@ public:
         Iterator& operator++();
         Iterator operator++(int);
         
-        Node& operator*() { return *current; }
+        T& operator*() { return current->value; }
+        
         Node* operator->() { return current; }
         const Node* operator->() const { return current; }
         
