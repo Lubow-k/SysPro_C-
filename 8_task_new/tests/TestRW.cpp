@@ -4,18 +4,19 @@
 #include "assert.h"
 
 #include "../file/FileRW.hpp"
-#include "../file/FileRWBuffer.hpp"
+#include "../file/FileRWBuffered.hpp"
 
 #include "../string/StringRW.hpp"
-#include "../string/StringRWBuffer.hpp"
+#include "../string/StringRWBuffered.hpp"
 
 
+std::string TEST_FILE = "8_task_new/input.txt";
 
 
 void test_1() {
     // file source - write/read a char
 
-    std::string in_file = "8_task/tests/in_1.txt";
+    std::string in_file = TEST_FILE;
     FileRW frw = FileRW(in_file);
     frw.open();
 
@@ -36,7 +37,7 @@ void test_1() {
 void test_2() {
     // file source - write/read a string
 
-    std::string in_file = "8_task/tests/in_1.txt";
+    std::string in_file = TEST_FILE;
     FileRW frw = FileRW(in_file);
     frw.open();
 
@@ -52,7 +53,7 @@ void test_2() {
 void test_3() {
     // file source - write/read int
 
-    std::string in_file = "8_task/tests/in_1.txt";
+    std::string in_file = TEST_FILE;
     FileRW frw = FileRW(in_file);
     frw.open();
 
@@ -130,9 +131,9 @@ void test_6() {
 void test_7() {
     // file source with buffer - write/read a char
 
-    std::string in_file = "8_task/tests/in_1.txt";
+    std::string in_file = TEST_FILE;
     std::fstream in(in_file, std::ios::out);        // clean file
-    FileRWBuffer frw = FileRWBuffer(in_file, 4);
+    FileRWBuffered frw = FileRWBuffered(in_file, 4);
     frw.open();
 
     char array[6] = { 'S', 'Y', 'S', 'P', 'R', 'O' };
@@ -153,9 +154,9 @@ void test_7() {
 void test_8() {
     // file source with buffer - write/read a string
 
-    std::string in_file = "8_task/tests/in_1.txt";
-    std::fstream in(in_file, std::ios::out);        // clean file
-    FileRWBuffer frw = FileRWBuffer(in_file);       // default buffer size
+    std::string in_file = TEST_FILE;
+    std::fstream in(in_file, std::ios::out);                 // clean file
+    FileRWBuffered frw = FileRWBuffered(in_file);            // default buffer size
     frw.open();
 
     std::string str = "qwerty";
@@ -169,9 +170,9 @@ void test_8() {
 void test_9() {
     // file source with buffer - write/read int
 
-    std::string in_file = "8_task/tests/in_1.txt";
+    std::string in_file = TEST_FILE;
     std::fstream in(in_file, std::ios::out);        // clean file
-    FileRWBuffer frw = FileRWBuffer(in_file);
+    FileRWBuffered frw = FileRWBuffered(in_file, 5);
 
     frw.open();
 
@@ -192,7 +193,7 @@ void test_9() {
 void test_10() {
     // string source with buffer - write/read a char
 
-    StringRWBuffer srw = StringRWBuffer(4);
+    StringRWBuffered srw = StringRWBuffered(4);
     srw.open();
 
     char array[6] = { 'S', 'Y', 'S', 'P', 'R', 'O' };
@@ -213,7 +214,7 @@ void test_10() {
 void test_11() {
     // string source with buffer - write/read a string
 
-    StringRWBuffer srw = StringRWBuffer(15);       // default buffer size
+    StringRWBuffered srw = StringRWBuffered();       // default buffer size
     srw.open();
 
     std::string str = "qwerty";
@@ -227,7 +228,7 @@ void test_11() {
 void test_12() {
     // file source with buffer - write/read int
 
-    StringRWBuffer srw = StringRWBuffer();
+    StringRWBuffered srw = StringRWBuffered(15);
 
     srw.open();
 

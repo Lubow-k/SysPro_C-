@@ -1,11 +1,11 @@
 #pragma once
 #include <cmath>
-#include "../ReaderWriter.hpp"
 #include "../IOException.hpp"
+#include "../IOSource.hpp"
 
 #define MAX_LEN 500
 
-class FileSource: virtual public IOSource {
+class FileSource: public IOSource {
     const char* file_name;
     bool file_open;
 
@@ -13,7 +13,7 @@ class FileSource: virtual public IOSource {
     FILE* source;
 
   public:
-    FileSource(std::string file_name): file_name(file_name.c_str()), file_open(false) {}     // maybe check for existing of file -> throw 
+    FileSource(std::string file_name): file_name(file_name.c_str()), file_open(false) {}
     FileSource(FileSource& otheer)=delete;
     FileSource(FileSource&& otheer)=delete;
     ~FileSource() { if (file_open) { fclose(source); } }

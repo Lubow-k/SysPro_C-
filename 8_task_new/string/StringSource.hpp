@@ -1,9 +1,9 @@
 #pragma once
-#include "../ReaderWriter.hpp"
 #include "../IOException.hpp"
+#include "../IOSource.hpp"
 
 
-class StringSource: virtual IOSource {
+class StringSource: public IOSource {
     bool string_open;
   
   protected:

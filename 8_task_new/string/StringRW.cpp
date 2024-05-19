@@ -1,4 +1,5 @@
 #include "StringRW.hpp"
+#include "../Utils.hpp"
 
 
 /* Write */
@@ -31,7 +32,7 @@ int StringRW::read_int() {
     if (it == source.end()) {
         throw StringException("EOF while reading int");
     }
-    if (is_number(num)) {
+    if (Utils::is_number(num)) {
         it++;
         return stoi(num);
     }
