@@ -1,6 +1,7 @@
 #include <new>
 #include <iostream>
-#include<type_traits>
+#include <cassert>
+#include <type_traits>
 
 
 class Pair {
@@ -17,11 +18,7 @@ public:
 
 
 template<size_t SIZE, typename... Types>
-void allocate(void* memory, Types... args) {
-  constexpr size_t total_size = (sizeof(Types) + ...) ;
-  static_assert(SIZE >= total_size);
-  static_assert((std::is_copy_constructible<Types>::value && ...));
-
+void allocate(void* memory, Types... args) requires ((std::is_copy_constructible<Types>::value && ...), (SIZE >= (sizeof(Types) + ...))) {
   auto buffer = static_cast<char*>(memory);
   auto alloc = [&buffer]<typename T>(T arg) { 
     new(buffer) T(arg); 
@@ -46,6 +43,13 @@ int main() {
   double* buf_2 = (double*) (memory + sizeof(v_1)); 
   std::string* buf_3 = (std::string*) (memory + sizeof(v_1) + sizeof(v_2)); 
   Pair* buf_4 = (Pair*) (memory + sizeof(v_1) + sizeof(v_2) + sizeof(v_3)); 
+
+  assert(v_1 == *buf_1);
+  assert(v_2 == *buf_2);
+  assert(v_3 == *buf_3);
+  assert(v_4.getFirst() == buf_4->getFirst());
+  assert(v_4.getSecond() == buf_4->getSecond());
+
 
   std::cout << *buf_1 << std::endl; 
   std::cout << *buf_2 << std::endl; 
